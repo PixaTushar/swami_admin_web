@@ -8,13 +8,6 @@ import '../utilities/progress_dialog_utils.dart';
 class FireController {
   static FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
 
-  final CollectionReference _postCollectionReferance =
-      _firebaseFirestore.collection("post");
-  final CollectionReference _dailyThoughtCollectionReferance =
-      _firebaseFirestore.collection("dailyThought");
-  final CollectionReference _adsReferance =
-      _firebaseFirestore.collection("Ads");
-
   Future<void> addData(
       {required BuildContext context,
       required String isSelected,
@@ -61,12 +54,12 @@ class FireController {
       });
     }
   }
+}
 
-  void ShowSnackBar(BuildContext context, String message, Color color) {
-    final snackBar =
-        new SnackBar(content: new Text(message), backgroundColor: color);
+void ShowSnackBar(BuildContext context, String message, Color color) {
+  final snackBar =
+      new SnackBar(content: new Text(message), backgroundColor: color);
 
-    // Find the Scaffold in the Widget tree and use it to show a SnackBar!
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
+  // Find the Scaffold in the Widget tree and use it to show a SnackBar!
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
