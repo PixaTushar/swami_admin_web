@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "323221447939",
+    "project_id": "swami-56837",
+    "storage_bucket": "swami-56837.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:323221447939:android:ef7d56e629e7d193997536",
+        "android_client_info": {
+          "package_name": "com.mobileappxperts.swaminarayanvideostatus"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8i8uN9qsPLXrfA1KN7q8TA6wrMVw_4f4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:323221447939:android:ed5b9a00456812ce997536",
+        "android_client_info": {
+          "package_name": "com.swami_web_admin.swami_admin_web"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8i8uN9qsPLXrfA1KN7q8TA6wrMVw_4f4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
