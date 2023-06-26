@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:swami_admin_web/constants/color_constant.dart';
@@ -23,23 +24,29 @@ class HomeView extends GetView<HomeController> {
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.blue.shade100,
-            title:  Row(
+            title: Row(
               children: [
-                Text('Swaminarayn Admin',style: TextStyle(fontWeight: FontWeight.bold,color: appTheme.primaryTheme, shadows: <Shadow>[
-                  Shadow(
-                    offset: Offset(2.0, 2.0),
-                    blurRadius: 3.0,
-                    color: Color.fromARGB(255, 0, 0, 0),
+                Text(
+                  'Swaminarayn Admin',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: appTheme.primaryTheme,
+                    shadows: <Shadow>[
+                      Shadow(
+                        offset: Offset(2.0, 2.0),
+                        blurRadius: 3.0,
+                        color: Color.fromARGB(255, 0, 0, 0),
+                      ),
+                      Shadow(
+                        offset: Offset(2.0, 2.0),
+                        blurRadius: 8.0,
+                        color: Colors.grey,
+                      ),
+                    ],
                   ),
-                  Shadow(
-                    offset: Offset(2.0, 2.0),
-                    blurRadius: 8.0,
-                    color: Colors.grey,
-                  ),
-                ],),),
+                ),
               ],
             ),
-
             elevation: 0,
             centerTitle: true,
           ),
@@ -75,18 +82,17 @@ class HomeView extends GetView<HomeController> {
                                 children: [
                                   DropdownButtonFormField<String>(
                                     decoration: InputDecoration(
-
                                         border: OutlineInputBorder(
-                                            borderSide: BorderSide(color: Colors.white),
+                                          borderSide:
+                                              BorderSide(color: Colors.white),
                                           borderRadius: const BorderRadius.all(
-
                                             const Radius.circular(10.0),
                                           ),
                                         ),
                                         filled: true,
                                         focusColor: Colors.black,
-
-                                        hintStyle: TextStyle(color: Colors.grey[800]),
+                                        hintStyle:
+                                            TextStyle(color: Colors.grey[800]),
                                         hintText: "Select  Type",
                                         fillColor: Colors.blue[100]),
                                     value: controller.dropdownValue.value,
@@ -108,59 +114,77 @@ class HomeView extends GetView<HomeController> {
                                     },
                                   ),
                                   Spacing.height(20),
-                                  getTextField(
-                                    hintText: 'VideoLink',
-                                    textEditingController:
-                                        controller.mediaLinkController.value,
-                                    validation: (value) {
-                                      if (isNullEmptyOrFalse(value)) {
-                                        return "Please enter mediaLink";
-                                      } else {
-                                        return controller.hasValidUrl(controller
-                                            .mediaLinkController.value.text);
-                                      }
-                                    },
-                                  ),
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        controller.pickFile();
+                                      },
+                                      child: Text("Upload")),
                                   Spacing.height(20),
-                                  getTextField(
-                                    hintText: 'ThumbnailLink',
-                                    textEditingController: controller
-                                        .videoThumbnaiController.value,
-                                    validation: (value) {
-                                      if (isNullEmptyOrFalse(value)) {
-                                        return null;
-                                      } else {
-                                        return controller.hasValidUrl(controller
-                                            .videoThumbnaiController
-                                            .value
-                                            .text);
-                                      }
-                                    },
-                                  ),
+                                  Text(controller.hasImage.isFalse
+                                      ? "Please select a file"
+                                      : controller
+                                          .result!.value.files.first.name
+                                          .toString()),
+                                  Spacing.height(20),
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        controller.pickThumbnail();
+                                      },
+                                      child: Text("Upload")),
+                                  Spacing.height(20),
+                                  Text(controller.hasThumbnail.isFalse
+                                      ? "Please select a Thumbnail"
+                                      : controller.resultThumbnail!.value.files
+                                          .first.name
+                                          .toString()),
                                   Spacing.height(20),
                                   InkWell(
-                                    onTap: ()async {
+                                    onTap: () async {
                                       if (controller.formKey.currentState!
                                           .validate()) {
-                                     await   fireController.addData(context: context,
+                                        RxString videoTumbnail = "".obs;
+                                        RxString medialink = "".obs;
+                                        if (!isNullEmptyOrFalse(
+                                            controller.resultThumbnail)) {
+                                          await FirebaseStorage.instance
+                                              .ref(
+                                                  '${controller.resultThumbnail!.value.files.first.name}')
+                                              .putData(controller
+                                                  .resultThumbnail!
+                                                  .value
+                                                  .files
+                                                  .first
+                                                  .bytes!)
+                                              .then((p0) async {
+                                            videoTumbnail.value =
+                                                await p0.ref.getDownloadURL();
+                                          });
+                                        }
+                                        await FirebaseStorage.instance
+                                            .ref(
+                                                '${controller.result!.value.files.first.name}')
+                                            .putData(controller.result!.value
+                                                .files.first.bytes!)
+                                            .then((p0) async {
+                                          medialink.value =
+                                              await p0.ref.getDownloadURL();
+                                        }).catchError((e) {
+                                          print(e);
+                                        });
+
+                                        await fireController.addData(
+                                            context: context,
                                             isSelected:
-                                            controller.dropdownValue.value,
-                                            mediaLink: controller
-                                                .mediaLinkController.value.text,
-                                            videoThumbnail: controller
-                                                .videoThumbnaiController
-                                                .value
-                                                .text);
+                                                controller.dropdownValue.value,
+                                            mediaLink: medialink.value,
+                                            videoThumbnail:
+                                                videoTumbnail.value);
 
-                                     controller
-                                         .mediaLinkController.value.clear();
-                                     controller
-                                         .videoThumbnaiController
-                                         .value.clear();
-
-
+                                        controller.mediaLinkController.value
+                                            .clear();
+                                        controller.videoThumbnaiController.value
+                                            .clear();
                                       }
-
                                     },
                                     child: getButton(
                                       title: 'Submit',
