@@ -149,7 +149,10 @@ class HomeView extends GetView<HomeController> {
                                             .then((p0) async {
                                           videoTumbnail.value =
                                               await p0.ref.getDownloadURL();
+                                        }).catchError((e) {
+                                          print(e);
                                         });
+                                        ;
                                       }
                                       await FirebaseStorage.instance
                                           .ref(
