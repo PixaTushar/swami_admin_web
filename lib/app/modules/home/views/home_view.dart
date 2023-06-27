@@ -24,7 +24,7 @@ class HomeView extends GetView<HomeController> {
           title: Row(
             children: [
               Text(
-                'Swaminarayn Admin',
+                'Swaminarayan Daily Stats Admin',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: appTheme.primaryTheme,
@@ -116,10 +116,16 @@ class HomeView extends GetView<HomeController> {
                                     },
                                     child: Text("Upload")),
                                 Spacing.height(20),
-                                Text(controller.hasImage.isFalse
-                                    ? "Please select a file"
-                                    : controller.result!.value.files.first.name
-                                        .toString()),
+                                Text(
+                                  controller.hasImage.isFalse
+                                      ? "Please select a file (Image , Video)"
+                                      : controller
+                                          .result!.value.files.first.name
+                                          .toString(),
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
                                 Spacing.height(20),
                                 ElevatedButton(
                                     onPressed: () {
@@ -127,11 +133,16 @@ class HomeView extends GetView<HomeController> {
                                     },
                                     child: Text("Upload")),
                                 Spacing.height(20),
-                                Text(controller.hasThumbnail.isFalse
-                                    ? "Please select a Thumbnail"
-                                    : controller
-                                        .resultThumbnail!.value.files.first.name
-                                        .toString()),
+                                Text(
+                                  controller.hasThumbnail.isFalse
+                                      ? "Please select a Thumbnail (Image)"
+                                      : controller.resultThumbnail!.value.files
+                                          .first.name
+                                          .toString(),
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
                                 Spacing.height(20),
                                 InkWell(
                                   onTap: () async {
