@@ -15,6 +15,7 @@ class HomeController extends GetxController {
   Rx<FilePickerResult>? result;
   Rx<FilePickerResult>? resultThumbnail;
   RxBool hasImage = false.obs;
+  RxBool isImage = true.obs;
   RxBool hasThumbnail = false.obs;
   @override
   void onInit() {
@@ -53,6 +54,13 @@ class HomeController extends GetxController {
       result = value!.obs;
       print(value.files.first.name);
       result!.refresh();
+      if (value.files.first.extension! == "mp4" ||
+          value.files.first.extension! == "webm" ||
+          value.files.first.extension! == "mov") {
+        isImage.value = false;
+      } else {
+        isImage.value = true;
+      }
       hasImage.value = true;
       update();
     }).catchError((e) {

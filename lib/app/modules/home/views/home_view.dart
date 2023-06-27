@@ -128,10 +128,22 @@ class HomeView extends GetView<HomeController> {
                                 ),
                                 Spacing.height(20),
                                 ElevatedButton(
-                                    onPressed: () {
-                                      controller.pickThumbnail();
-                                    },
-                                    child: Text("Upload")),
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              (controller.isImage.isFalse)
+                                                  ? Colors.blue
+                                                  : Colors.red),
+                                    ),
+                                    onPressed: (controller.isImage.isTrue)
+                                        ? null
+                                        : () {
+                                            controller.pickThumbnail();
+                                          },
+                                    child: Text(
+                                      "Upload",
+                                      style: TextStyle(color: Colors.white),
+                                    )),
                                 Spacing.height(20),
                                 Text(
                                   controller.hasThumbnail.isFalse
