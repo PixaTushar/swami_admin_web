@@ -153,12 +153,14 @@ class HomeView extends GetView<HomeController> {
                                                 controller.dropdownValue.value,
                                             mediaLink: controller
                                                 .mediaLinkController.value.text
-                                                .toString(),
+                                                .toString()
+                                                .trim(),
                                             videoThumbnail: controller
                                                 .videoThumbnaiController
                                                 .value
-                                                .value
-                                                .toString());
+                                                .text
+                                                .toString()
+                                                .trim());
                                       }
                                     },
                                     child: getButton(
